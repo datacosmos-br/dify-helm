@@ -56,7 +56,7 @@ image:
     #   - myRegistryKeySecretName
 
   pluginDaemon:
-    repository: registry.vxk8s.com/langgenius/dify-plugin-daemon:
+    repository: registry.vxk8s.com/langgenius/dify-plugin-daemon
     tag: 0.0.2-local
     pullPolicy: IfNotPresent
     ## Optionally specify an array of imagePullSecrets.
