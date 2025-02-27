@@ -526,6 +526,7 @@ DIFY_INNER_API_URL: {{ .Values.pluginDaemon.pluginDifyInnerApiUrl | quote }}
 DIFY_INNER_API_KEY: {{ .Values.pluginDaemon.pluginDifyInnerApiKey | quote }}
 PLUGIN_REMOTE_INSTALLING_HOST: {{ .Values.pluginDaemon.pluginRemoteInstallingHost | quote }}
 PLUGIN_REMOTE_INSTALLING_PORT: {{ .Values.pluginDaemon.pluginRemoteInstallingPort | quote }}
+FORCE_VERIFYING_SIGNATURE: {{ .Values.pluginDaemon.forceVerifyingSignature | quote }}
 ## update-end-author: luo_jj date:2025-02-26 for: 添加 dify-plugin-daemon:0.0.2-local 版本必需配置
 {{- end }}
 
