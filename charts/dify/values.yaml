@@ -584,6 +584,9 @@ pluginDaemon:
   # Apply your own Environment Variables if necessary
   # - name: LANG
   #   value: "C.UTF-8"
+    # 添加 pip 镜像源
+    - name: PIP_MIRROR_URL
+      value: "https://mirrors.aliyun.com/pypi/simple/"
   service:
     port: 5002
     annotations: {}
