@@ -3,7 +3,7 @@
 MODE: api
 # The log level for the application. Supported values are `DEBUG`, `INFO`, `WARNING`, `ERROR`, `CRITICAL`
 LOG_LEVEL: {{ .Values.api.logLevel }}
-LOG_FILE=/app/logs/server.log
+LOG_FILE: /app/logs/server.log
 # A secret key that is used for securely signing the session cookie and encrypting sensitive information on the database. You can generate a strong key using `openssl rand -base64 42`.
 # SECRET_KEY: {{ .Values.api.secretKey }}
 # The base URL of console application web frontend, refers to the Console base URL of WEB service if console domain is
