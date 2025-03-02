@@ -596,7 +596,7 @@ pluginDaemon:
     apiKey: "lYkiYYT6owG+71oLerGzA7GXCgOT++6ovaezWAjpCjf+Sjc3ZtU+qUEi"
   database: "dify_plugin"
   persistence:
-    mountPath: "/app/storage/cwd"
+    mountPath: "/app/storage"
     annotations:
       helm.sh/resource-policy: keep
     persistentVolumeClaim:
