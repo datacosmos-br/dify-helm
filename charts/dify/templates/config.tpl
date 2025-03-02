@@ -114,6 +114,8 @@ APP_WEB_URL: {{ .Values.api.url.appWeb | quote }}
 FILES_URL: {{ .Values.api.url.files | quote }}
 # --- All the configurations below are the same as those in the 'api' service. ---
 
+INDEXING_MAX_SEGMENTATION_TOKENS_LENGTH: {{ printf "%d" (int64 .Values.knowledge.indexingMaxSegmentationTokensLength) | quote }}
+
 # The log level for the application. Supported values are `DEBUG`, `INFO`, `WARNING`, `ERROR`, `CRITICAL`
 LOG_LEVEL: {{ .Values.worker.logLevel | quote }}
 # A secret key that is used for securely signing the session cookie and encrypting sensitive information on the database. You can generate a strong key using `openssl rand -base64 42`.
