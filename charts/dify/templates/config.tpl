@@ -96,6 +96,22 @@ MODE: worker
 # different from api or web app domain.
 # example: http://cloud.dify.ai
 CONSOLE_WEB_URL: {{ .Values.api.url.consoleWeb | quote }}
+# The base URL of console application api server, refers to the Console base URL of WEB service if console domain is
+# different from api or web app domain.
+# example: http://cloud.dify.ai
+CONSOLE_API_URL: {{ .Values.api.url.consoleApi | quote }}
+# The URL prefix for Service API endpoints, refers to the base URL of the current API service if api domain is
+# different from console domain.
+# example: http://api.dify.ai
+SERVICE_API_URL: {{ .Values.api.url.serviceApi | quote }}
+# The URL prefix for Web APP frontend, refers to the Web App base URL of WEB service if web app domain is different from
+# console or api domain.
+# example: http://udify.app
+APP_WEB_URL: {{ .Values.api.url.appWeb | quote }}
+# File preview or download Url prefix.
+# used to display File preview or download Url to the front-end or as Multi-model inputs;
+# Url is signed and has expiration time.
+FILES_URL: {{ .Values.api.url.files | quote }}
 # --- All the configurations below are the same as those in the 'api' service. ---
 
 # The log level for the application. Supported values are `DEBUG`, `INFO`, `WARNING`, `ERROR`, `CRITICAL`
@@ -135,6 +151,9 @@ APP_API_URL: {{ .Values.api.url.appApi | quote }}
 MARKETPLACE_API_URL: {{ .Values.api.url.marketplaceApi | quote }}
 MARKETPLACE_URL: {{ .Values.api.url.marketplace | quote }}
 ## update-end--author: luo_jj date:2025-02-27 for: 添加插件市场 URL 配置
+## update-begin-author: luo_jj date:2025-02-24 for: 添加知识库相关配置
+{{- include "dify.knowledge.config" . }}
+## update-end-author: luo_jj date:2025-02-24 for: 添加知识库相关配置
 {{- end }}
 
 {{- define "dify.db.config" -}}
