@@ -622,7 +622,7 @@ pluginDaemon:
     annotations: {}
 
 postgresql:
-  enabled: true
+  enabled: false
   name: postgres
   global:
     storageClass: ""
@@ -693,7 +693,7 @@ postgresql:
 
 
 weaviate:
-  enabled: true
+  enabled: false
   image:
     # registry where weaviate image is stored
     registry: docker.io
@@ -1144,7 +1144,7 @@ tolerations: []
 affinity: {}
 
 redis:
-  enabled: true
+  enabled: false
   ## @section Global parameters
   ## Global Docker image parameters
   ## Please, note that this will override the image parameters, including dependencies, configured to use the global value
@@ -2937,10 +2937,10 @@ redis:
 # - these configs are only used when `externalPostgres.enabled` is true
 ###################################
 externalPostgres:
-  enabled: false
+  enabled: true
   username: "postgres"
   password: "difyai123456"
-  address: localhost
+  address: "host.minikube.internal"
   port: 5432
   dbName: dify
   maxOpenConns: 20
@@ -3012,8 +3012,8 @@ externalCOS:
 # - these configs are only used when `externalRedis.enabled` is true
 ###################################
 externalRedis:
-  enabled: false
-  host: "redis.example"
+  enabled: true
+  host: "host.minikube.internal"
   port: 6379
   username: ""
   password: "difyai123456"
@@ -3024,8 +3024,8 @@ externalRedis:
 # - these configs take effect when `externalWeaviate.enabled` is true
 ###################################
 externalWeaviate:
-  enabled: false
-  endpoint: "http://weaviate:8080"
+  enabled: true
+  endpoint: "http://host.minikube.internal:8080"
   apiKey: "WVF5YThaHlkYwhGUSmCRgsX3tD5ngdN8pkih"
 
 ###################################
