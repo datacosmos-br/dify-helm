@@ -68,7 +68,7 @@ image:
 
 api:
   enabled: true
-  replicas: 1
+  replicas: 2
   resources: {}
   nodeSelector: {}
   affinity: {}
@@ -233,7 +233,7 @@ api:
 
 worker:
   enabled: true
-  replicas: 1
+  replicas: 2
   resources: {}
   nodeSelector: {}
   affinity: {}
@@ -283,7 +283,7 @@ worker:
 
 proxy:
   enabled: true
-  replicas: 1
+  replicas: 2
   resources: {}
   nodeSelector: {}
   affinity: {}
@@ -352,7 +352,7 @@ proxy:
 
 web:
   enabled: true
-  replicas: 1
+  replicas: 2
   resources: {}
   nodeSelector: {}
   affinity: {}
@@ -421,7 +421,7 @@ web:
 
 sandbox:
   enabled: true
-  replicas: 1
+  replicas: 2
   resources: {}
   nodeSelector: {}
   affinity: {}
@@ -563,7 +563,7 @@ ssrfProxy:
 
 pluginDaemon:
   enabled: true
-  replicas: 1
+  replicas: 2
   resources: {}
   nodeSelector: {}
   affinity: {}
