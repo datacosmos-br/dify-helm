@@ -83,7 +83,7 @@ SSRF_PROXY_HTTPS_URL: http://{{ template "dify.ssrfProxy.fullname" .}}:{{ .Value
 {{- end }}
 
 {{- if .Values.pluginDaemon.enabled }}
-PLUGIN_DAEMON_URL: http://{{ template "dify.pluginDaemon.fullname" .}}:{{ .Values.pluginDaemon.service.port }}
+PLUGIN_DAEMON_URL: http://{{ template "dify.pluginDaemon.fullname" .}}:{{ .Values.pluginDaemon.service.ports.daemon }}
 {{- end }}
 {{- end }}
 
@@ -136,7 +136,7 @@ LOG_LEVEL: {{ .Values.worker.logLevel | quote }}
 {{ include "dify.vectordb.config" . }}
 {{ include "dify.mail.config" . }}
 {{- if .Values.pluginDaemon.enabled }}
-PLUGIN_DAEMON_URL: http://{{ template "dify.pluginDaemon.fullname" .}}:{{ .Values.pluginDaemon.service.port }}
+PLUGIN_DAEMON_URL: http://{{ template "dify.pluginDaemon.fullname" .}}:{{ .Values.pluginDaemon.service.ports.daemon }}
 {{- end }}
 {{- end }}
 
@@ -464,7 +464,7 @@ server {
     }
 
     location /e {
-      proxy_pass http://{{ template "dify.pluginDaemon.fullname" .}}:{{ .Values.pluginDaemon.service.port }};
+      proxy_pass http://{{ template "dify.pluginDaemon.fullname" .}}:{{ .Values.pluginDaemon.service.ports.daemon }};
       include proxy.conf;
     }
 
@@ -541,15 +541,14 @@ cache_store_log none
 DB_DATABASE: {{ .Values.pluginDaemon.database | quote }}
 {{- end }}
 SERVER_PORT: "5002"
+PLUGIN_REMOTE_INSTALLING_HOST: "0.0.0.0"
+PLUGIN_REMOTE_INSTALLING_PORT: "5003"
 MAX_PLUGIN_PACKAGE_SIZE: "52428800"
 PLUGIN_WORKING_PATH: {{ .Values.pluginDaemon.persistence.mountPath | quote }}
-## update-begin-author: luo_jj date:2025-02-26 for: 添加 dify-plugin-daemon:0.0.2-local 版本必需配置
-DIFY_INNER_API_URL: {{ .Values.pluginDaemon.pluginDifyInnerApiUrl | quote }}
-DIFY_INNER_API_KEY: {{ .Values.pluginDaemon.pluginDifyInnerApiKey | quote }}
-PLUGIN_REMOTE_INSTALLING_HOST: {{ .Values.pluginDaemon.pluginRemoteInstallingHost | quote }}
-PLUGIN_REMOTE_INSTALLING_PORT: {{ .Values.pluginDaemon.pluginRemoteInstallingPort | quote }}
+DIFY_INNER_API_URL: http://{{ template "dify.api.fullname" .}}:{{ .Values.api.service.port }}
+## update-begin-author: luo_jj date:2025-02-26 for: 添加 dify-plugin-daemon 配置
 FORCE_VERIFYING_SIGNATURE: {{ .Values.pluginDaemon.forceVerifyingSignature | quote }}
-## update-end-author: luo_jj date:2025-02-26 for: 添加 dify-plugin-daemon:0.0.2-local 版本必需配置
+## update-end-author: luo_jj date:2025-02-26 for: 添加 dify-plugin-daemon 配置
 {{- end }}
 
 ## update-begin-author: luo_jj date:2025-02-24 for: 添加知识库相关配置

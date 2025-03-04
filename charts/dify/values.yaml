@@ -588,12 +588,18 @@ pluginDaemon:
     - name: PIP_MIRROR_URL
       value: "https://mirrors.aliyun.com/pypi/simple/"
   service:
-    port: 5002
+    ports:
+      daemon: 5002
+      # Leave it unspecified in order NOT to expose port for remote installation as a `Service`.
+      pluginInstall:
+      # pluginInstall: 5003
     annotations: {}
     labels: {}
     clusterIP: ""
   auth:
-    apiKey: "lYkiYYT6owG+71oLerGzA7GXCgOT++6ovaezWAjpCjf+Sjc3ZtU+qUEi"
+    serverKey: "lYkiYYT6owG+71oLerGzA7GXCgOT++6ovaezWAjpCjf+Sjc3ZtU+qUEi"
+    # A separate key for interactions between `api`(`worker`) and `pluginDaemon`
+    difyApiKey: "QaHbTe77CtuXmsfyhR7+vRjI/+XbV1AaFy691iy+kGDv2Jvy0/eAh8Y1"
   database: "dify_plugin"
   persistence:
     mountPath: "/app/storage"
@@ -628,13 +634,9 @@ pluginDaemon:
     ## @param pluginDaemon.serviceAccount.annotations Additional custom annotations for the ServiceAccount
     ##
     annotations: {}
-  ## update-begin-author: luo_jj date:2025-02-26 for: 添加 dify-plugin-daemon:0.0.2-local 版本必需配置
-  pluginDifyInnerApiUrl: "http://dify-api:5001"
-  pluginDifyInnerApiKey: "QaHbTe77CtuXmsfyhR7+vRjI/+XbV1AaFy691iy+kGDv2Jvy0/eAh8Y1"
-  pluginRemoteInstallingHost: "0.0.0.0"
-  pluginRemoteInstallingPort: "5003"
+  ## update-begin-author: luo_jj date:2025-02-26 for: 添加 dify-plugin-daemon 配置
   forceVerifyingSignature: false
-  ## update-end-author: luo_jj date:2025-02-26 for: 添加 dify-plugin-daemon:0.0.2-local 版本必需配置
+  ## update-end-author: luo_jj date:2025-02-26 for: 添加 dify-plugin-daemon 配置
 
 postgresql:
   enabled: true
