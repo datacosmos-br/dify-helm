@@ -134,9 +134,9 @@ spec:
         volumeMounts:
         # update-begin-author: luo_jj date:2025-03-05 for:添加 sandbox config.yaml 配置文件
         {{- if $usePvc }}
-        - name: app-data
+        - name: upload-files
           mountPath: /var/sandbox/sandbox-python/usr/local/storage/upload_files
-          subPath: upload-files
+          subPath: upload_files
         {{- end }}
         - name: sandbox-config
           mountPath: /conf/config.yaml
