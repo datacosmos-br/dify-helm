@@ -1,4 +1,5 @@
 {{- if and .Values.sandbox.enabled}}
+{{- $usePvc := not (or .Values.externalS3.enabled .Values.externalOSS.enabled .Values.externalAzureBlobStorage.enabled .Values.externalGCS.enabled .Values.externalCOS.enabled) -}}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -131,6 +132,17 @@ spec:
         securityContext:
           allowPrivilegeEscalation: {{ .Values.sandbox.privileged }}
         volumeMounts:
+        # update-begin-author: luo_jj date:2025-03-05 for:添加 sandbox config.yaml 配置文件
+        {{- if $usePvc }}
+        - name: app-data
+          mountPath: {{ .Values.api.persistence.mountPath | quote }}
+          subPath: {{ .Values.api.persistence.persistentVolumeClaim.subPath | default "" }}
+        {{- end }}
+        - name: sandbox-config
+          mountPath: /conf/config.yaml
+          readOnly: true
+          subPath: config.yaml
+        # update-end-author: luo_jj date:2025-03-05 for:添加 sandbox config.yaml 配置文件
         - name: shared-ssl-certs      # 挂载系统证书
           mountPath: /etc/ssl/certs   # 覆盖系统证书目录
         - name: python-ca-bundle      # 挂载 Python Certifi 证书包
@@ -160,9 +172,19 @@ spec:
 {{ toYaml .Values.sandbox.tolerations | indent 8 }}
     {{- end }}
       volumes:
-      - name: custom-ca-cert
+      # update-begin-author: luo_jj date:2025-03-05 for:添加 sandbox config.yaml 配置文件
+      {{- if $usePvc }}
+      - name: app-data
+        persistentVolumeClaim:
+          claimName: {{ .Values.api.persistence.persistentVolumeClaim.existingClaim | default (printf "%s" (include "dify.fullname" . | trunc 58)) }}
+      {{- end }}
+      - name: sandbox-config
         configMap:
-          name: dify-custom-ca-cert
+          name: {{ template "dify.sandbox.fullname" . }}
+      # update-end-author: luo_jj date:2025-03-05 for:添加 sandbox config.yaml 配置文件
+      - name: custom-ca-cert   # 自定义根证书
+        configMap:
+          name: {{ template "dify.customCaCert.fullname" . }}
       - name: shared-ssl-certs   # 系统根证书目录
         emptyDir: {}
       - name: python-ca-bundle   # Python Certifi 证书包

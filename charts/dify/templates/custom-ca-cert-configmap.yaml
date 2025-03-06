@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: dify-custom-ca-cert
+  name: {{ template "dify.customCaCert.fullname" . }}
   labels:
     {{- include "dify.labels" . | nindent 4 }}
 data:

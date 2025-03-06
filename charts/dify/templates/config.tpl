@@ -383,6 +383,25 @@ HTTPS_PROXY: http://{{ template "dify.ssrfProxy.fullname" .}}:{{ .Values.ssrfPro
 {{- end }}
 {{- end }}
 
+# update-begin-author: luo_jj date:2025-03-05 for:添加 sandbox config.yaml 配置文件
+{{- define "dify.sandbox.config.conf" }}
+app:
+  port: 8194
+  debug: True
+  key: dify-sandbox
+max_workers: 4
+max_requests: 50
+worker_timeout: 5
+python_path: /usr/local/bin/python3
+enable_network: True # please make sure there is no network risk in your environment
+allowed_syscalls: [0,1,2,3,4,5,6,7,8,9,14,15,21,22,25,26,29,30,31,32,33,34,35,38,39,43,44,45,46,56,57,61,62,63,64,71,72,79,80,94,98,101,131,132,134,135,139,144,146,172,215,222,226,318,334,307,262,16,8,217,1,3,257,0,202,9,12,10,11,15,25,105,106,102,39,110,186,60,231,234,13,16,24,273,274,334,228,96,35,291,233,230,270,201,14,131,318,56,258,83,41,42,49,50,43,44,45,51,47,52,54,271,63,46,307,55,5,72,138,7,281]
+proxy:
+  socks5: ''
+  http: ''
+  https: ''
+{{- end }}
+# update-end-author: luo_jj date:2025-03-05 for:添加 sandbox config.yaml 配置文件
+
 {{- define "dify.nginx.config.proxy" }}
 proxy_set_header Host $host;
 proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;

@@ -185,7 +185,7 @@ spec:
       {{- end }}
       - name: custom-ca-cert
         configMap:
-          name: dify-custom-ca-cert
+          name: {{ template "dify.customCaCert.fullname" . }}
       - name: shared-ssl-certs   # 系统根证书目录
         emptyDir: {}
       - name: python-ca-bundle   # Python 自定义证书包
