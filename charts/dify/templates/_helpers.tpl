@@ -203,4 +203,3 @@ Create the name of the service account to use for the Dify Plugin Daemon
 {{- define "dify.customCaCert.fullname" -}}
 {{ template "dify.fullname" . }}-custom-ca-cert
 {{- end -}}
-{{- end -}}
