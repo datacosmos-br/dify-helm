@@ -5,7 +5,7 @@
 image:
   api:
     repository: registry.vxk8s.com/langgenius/dify-api
-    tag: "main"
+    tag: "main-1741232975"
     pullPolicy: IfNotPresent
     ## Optionally specify an array of imagePullSecrets.
     ## Secrets must be manually created in the namespace.
