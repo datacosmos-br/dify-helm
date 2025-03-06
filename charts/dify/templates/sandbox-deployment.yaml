@@ -134,9 +134,9 @@ spec:
         volumeMounts:
         # update-begin-author: luo_jj date:2025-03-05 for:添加 sandbox config.yaml 配置文件
         {{- if $usePvc }}
-        - name: upload-files
-          mountPath: /var/sandbox/sandbox-python/usr/local/storage/upload_files
-          subPath: upload_files
+        - name: app-data
+          mountPath: /var/sandbox/sandbox-python/usr/local/storage
+          subPath: {{ .Values.api.persistence.persistentVolumeClaim.subPath | default "" }}
         {{- end }}
         - name: sandbox-config
           mountPath: /conf/config.yaml
@@ -174,7 +174,7 @@ spec:
       volumes:
       # update-begin-author: luo_jj date:2025-03-05 for:添加 sandbox config.yaml 配置文件
       {{- if $usePvc }}
-      - name: upload-files
+      - name: app-data
         persistentVolumeClaim:
           claimName: {{ .Values.api.persistence.persistentVolumeClaim.existingClaim | default (printf "%s" (include "dify.fullname" . | trunc 58)) }}
       {{- end }}
