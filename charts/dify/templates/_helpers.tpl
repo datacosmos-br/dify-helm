@@ -196,3 +196,10 @@ Create the name of the service account to use for the Dify Plugin Daemon
     {{ default "default" .Values.pluginDaemon.serviceAccount.name }}
 {{- end -}}
 {{- end -}}
+
+{{/*
+创建自签名根证书名称
+*/}}
+{{- define "dify.customCaCert.fullname" -}}
+{{ template "dify.fullname" . }}-custom-ca-cert
+{{- end -}}

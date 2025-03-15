@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "dify.customCaCert.fullname" . }}
+  labels:
+    {{- include "dify.labels" . | nindent 4 }}
+data:
+  ca.pem: |-
+    {{ .Values.customCACert | default "" | nindent 4 }} 
