@@ -5,7 +5,7 @@ Deploy [langgenius/dify](https://github.com/langgenius/dify), an LLM based chat 
 
 ## Installation
 
-```bash
+```
 helm repo add dify https://borispolonsky.github.io/dify-helm
 helm repo update
 helm install my-release dify/dify
@@ -26,7 +26,6 @@ helm install my-release dify/dify
 - [x] weaviate
 - [ ] qdrant
 - [ ] milvus
-
 ### External components that can be used by this app with proper configuration
 
 - [x] Redis
@@ -47,5 +46,6 @@ helm install my-release dify/dify
   - [x] MyScaleDB
 
 ## Contributors
-
-[![Contributors](https://contrib.rocks/image?repo=maskshell/dify-helm)](https://github.com/maskshell/dify-helm/graphs/contributors)
+<a href="https://github.com/borispolonsky/dify-helm/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=borispolonsky/dify-helm" />
+</a>
