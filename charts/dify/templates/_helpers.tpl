@@ -91,6 +91,7 @@ Common labels
 */}}
 {{- define "dify.labels" -}}
 helm.sh/chart: {{ include "dify.chart" . }}
+application: dify
 {{ include "dify.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
@@ -196,3 +197,45 @@ Create the name of the service account to use for the Dify Plugin Daemon
     {{ default "default" .Values.pluginDaemon.serviceAccount.name }}
 {{- end -}}
 {{- end -}}
+
+{{/* extra api pods labels */}}
+{{- define "dify.api.extraPodLabels" -}}
+{{- if .Values.api.labels }}
+{{- toYaml .Values.api.labels }}
+{{- end }}
+{{- end }}
+
+{{/* extra worker pods labels */}}
+{{- define "dify.worker.extraPodLabels" -}}
+{{- if .Values.worker.labels }}
+{{- toYaml .Values.worker.labels }}
+{{- end }}
+{{- end }}
+
+{{/* extra proxy pods labels */}}
+{{- define "dify.proxy.extraPodLabels" -}}
+{{- if .Values.proxy.labels }}
+{{- toYaml .Values.proxy.labels }}
+{{- end }}
+{{- end }}
+
+{{/* extra web pods labels */}}
+{{- define "dify.web.extraPodLabels" -}}
+{{- if .Values.web.labels }}
+{{- toYaml .Values.web.labels }}
+{{- end }}
+{{- end }}
+
+{{/* extra sandbox pods labels */}}
+{{- define "dify.sandbox.extraPodLabels" -}}
+{{- if .Values.sandbox.labels }}
+{{- toYaml .Values.sandbox.labels }}
+{{- end }}
+{{- end }}
+
+{{/* extra sandbox pods labels */}}
+{{- define "dify.ssrfProxy.extraPodLabels" -}}
+{{- if .Values.ssrfProxy.labels }}
+{{- toYaml .Values.ssrfProxy.labels }}
+{{- end }}
+{{- end }}

@@ -16,6 +16,9 @@ CODE_EXECUTION_API_KEY: {{ .Values.sandbox.auth.apiKey | b64enc | quote }}
 {{- if .Values.pluginDaemon.enabled }}
 PLUGIN_DAEMON_KEY: {{ .Values.pluginDaemon.auth.serverKey | b64enc | quote }}
 INNER_API_KEY_FOR_PLUGIN: {{ .Values.pluginDaemon.auth.difyApiKey | b64enc | quote }}
+{{- if .Values.api.initPassword }}
+INIT_PASSWORD: {{ .Values.api.initPassword | b64enc | quote }}
+{{- end}}
 {{- end }}
 {{- end }}
 

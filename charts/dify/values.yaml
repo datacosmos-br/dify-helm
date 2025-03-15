@@ -76,6 +76,7 @@ api:
   nodeSelector: {}
   affinity: {}
   tolerations: []
+  labels: {}
   autoscaling:
     enabled: false
     minReplicas: 1
@@ -262,6 +263,7 @@ worker:
   podSecurityContext: {}
   # Configure Container Security Context
   containerSecurityContext: {}
+  labels: {}
   extraEnv:
   # Apply your own Environment Variables if necessary.
   # Variables defined here take higher priority than those from `ConfigMap` generated given `.Values`
@@ -300,6 +302,7 @@ proxy:
   nodeSelector: {}
   affinity: {}
   tolerations: []
+  labels: {}
   ## Configure extra options for proxy containers' liveness, readiness, and startup probes
   ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes
   ## @param proxy.customLivenessProbe Custom livenessProbe that overrides the default one
@@ -369,6 +372,7 @@ web:
   nodeSelector: {}
   affinity: {}
   tolerations: []
+  labels: {}
   autoscaling:
     enabled: false
     minReplicas: 1
@@ -486,6 +490,7 @@ sandbox:
   podSecurityContext: {}
   # Configure Container Security Context
   containerSecurityContext: {}
+  labels: {}
   extraEnv:
   # Apply your own Environment Variables if necessary
   # - name: LANG
@@ -524,6 +529,7 @@ ssrfProxy:
   nodeSelector: {}
   affinity: {}
   tolerations: []
+  labels: {}
   ## Configure extra options for ssrf proxy containers' liveness, readiness, and startup probes
   ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes
   ## @param ssrfProxy.customLivenessProbe Custom livenessProbe that overrides the default one
