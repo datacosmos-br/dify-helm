@@ -30,13 +30,9 @@ FILES_URL: {{ .Values.api.url.files | quote }}
 # When enabled, migrations will be executed prior to application startup and the application will start after the migrations have completed.
 MIGRATION_ENABLED: {{ .Values.api.migration | toString | quote }}
 
-## update-begin-author: luo_jj date:2025-02-26 for: 添加工作流相关配置
 {{- include "dify.workflow.config" . }}
-## update-end-author: luo_jj date:2025-02-26 for: 添加工作流相关配置
 
-## update-begin-author: luo_jj date:2025-02-24 for: 添加知识库相关配置
 {{- include "dify.knowledge.config" . }}
-## update-end-author: luo_jj date:2025-02-24 for: 添加知识库相关配置
 
 # The configurations of postgres database connection.
 # It is consistent with the configuration in the 'db' service below.
@@ -152,13 +148,11 @@ CONSOLE_API_URL: {{ .Values.api.url.consoleApi | quote }}
 # example: http://udify.app
 APP_API_URL: {{ .Values.api.url.appApi | quote }}
 # The DSN for Sentry
-## update-begin-author: luo_jj date:2025-02-27 for: 添加插件市场 URL 配置
+{{- include "dify.marketplace.config" . }}
+{{- if and .Values.pluginDaemon.enabled .Values.pluginDaemon.marketplace.enabled .Values.pluginDaemon.marketplace.apiProxyEnabled }}
+MARKETPLACE_API_URL: "/marketplace"
+{{- else }}
 MARKETPLACE_API_URL: {{ .Values.api.url.marketplaceApi | quote }}
-MARKETPLACE_URL: {{ .Values.api.url.marketplace | quote }}
-## update-end--author: luo_jj date:2025-02-27 for: 添加插件市场 URL 配置
-## update-begin-author: luo_jj date:2025-02-24 for: 添加知识库相关配置
-{{- include "dify.knowledge.config" . }}
-## update-end-author: luo_jj date:2025-02-24 for: 添加知识库相关配置
 {{- end }}
 MARKETPLACE_URL: {{ .Values.api.url.marketplace | quote }}
 {{- end }}
@@ -397,7 +391,6 @@ HTTPS_PROXY: http://{{ template "dify.ssrfProxy.fullname" .}}:{{ .Values.ssrfPro
 {{- end }}
 {{- end }}
 
-# update-begin-author: luo_jj date:2025-03-05 for:添加 sandbox config.yaml 配置文件
 {{- define "dify.sandbox.config.conf" }}
 app:
   port: 8194
@@ -414,7 +407,6 @@ proxy:
   http: ''
   https: ''
 {{- end }}
-# update-end-author: luo_jj date:2025-03-05 for:添加 sandbox config.yaml 配置文件
 
 {{- define "dify.nginx.config.proxy" }}
 proxy_set_header Host $host;
@@ -597,28 +589,28 @@ SERVER_PORT: "5002"
 PLUGIN_REMOTE_INSTALLING_HOST: "0.0.0.0"
 PLUGIN_REMOTE_INSTALLING_PORT: "5003"
 MAX_PLUGIN_PACKAGE_SIZE: "52428800"
-PLUGIN_WORKING_PATH: {{ .Values.pluginDaemon.persistence.mountPath | quote }}
-DIFY_INNER_API_URL: http://{{ template "dify.api.fullname" .}}:{{ .Values.api.service.port }}
-## update-begin-author: luo_jj date:2025-02-26 for: 添加 dify-plugin-daemon 配置
+PLUGIN_WORKING_PATH: {{ printf "%s/cwd" .Values.pluginDaemon.persistence.mountPath | clean | quote }}
+DIFY_INNER_API_URL: "http://{{ template "dify.api.fullname" . }}:{{ .Values.api.service.port }}"
 FORCE_VERIFYING_SIGNATURE: {{ .Values.pluginDaemon.forceVerifyingSignature | quote }}
-## update-end-author: luo_jj date:2025-02-26 for: 添加 dify-plugin-daemon 配置
+{{- include "dify.marketplace.config" . }}
 {{- end }}
 
-## update-begin-author: luo_jj date:2025-02-24 for: 添加知识库相关配置
 {{- define "dify.knowledge.config" }}
 UPLOAD_FILE_SIZE_LIMIT: {{ printf "%d" (int64 .Values.knowledge.uploadFileSizeLimit) | quote }}
 UPLOAD_FILE_BATCH_LIMIT: {{ printf "%d" (int64 .Values.knowledge.uploadFileBatchLimit) | quote }}
 INDEXING_MAX_SEGMENTATION_TOKENS_LENGTH: {{ printf "%d" (int64 .Values.knowledge.indexingMaxSegmentationTokensLength) | quote }}
 {{- end }}
-## update-end-author: luo_jj date:2025-02-24 for: 添加知识库相关配置
 
-## update-begin-author: luo_jj date:2025-02-26 for: 添加工作流相关配置
-{{- define "dify.workflow.config" }}
+{{- define "dify.marketplace.config" }}
+{{- if .Values.pluginDaemon.marketplace.enabled }}
+MARKETPLACE_ENABLED: "true"
+MARKETPLACE_API_URL: {{ .Values.api.url.marketplaceApi | quote }}
 HTTP_REQUEST_MAX_CONNECT_TIMEOUT: {{ printf "%d" (int64 .Values.workflow.httpRequestMaxConnectTimeout) | quote }}
 HTTP_REQUEST_MAX_READ_TIMEOUT: {{ printf "%d" (int64 .Values.workflow.httpRequestMaxReadTimeout) | quote }}
 HTTP_REQUEST_MAX_WRITE_TIMEOUT: {{ printf "%d" (int64 .Values.workflow.httpRequestMaxWriteTimeout) | quote }}
 HTTP_REQUEST_NODE_MAX_BINARY_SIZE: {{ printf "%d" (int64 .Values.workflow.httpRequestNodeMaxBinarySize) | quote }}
 HTTP_REQUEST_NODE_MAX_TEXT_SIZE: {{ printf "%d" (int64 .Values.workflow.httpRequestNodeMaxTextSize) | quote }}
+{{- else }}
+MARKETPLACE_ENABLED: "false"
 {{- end }}
-## update-end-author: luo_jj date:2025-02-26 for: 添加工作流相关配置
-
+{{- end }}

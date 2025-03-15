@@ -57,36 +57,6 @@ spec:
       securityContext:
 {{ toYaml .Values.api.podSecurityContext | indent 8 }}
       {{- end }}
-      initContainers:
-      - name: update-ca-certificates
-        image: "{{ .Values.image.api.repository }}:{{ default .Chart.AppVersion .Values.image.api.tag }}"
-        command:
-        - /bin/sh
-        - -c
-        - |
-          # 1. 更新系统根证书
-          # 将自定义证书复制到 CA 目录并更新
-          ls -l /custom-certs/
-          cp /custom-certs/* /usr/local/share/ca-certificates/
-          update-ca-certificates
-
-          # 将生成的系统证书复制到共享 Volume
-          cp -r /etc/ssl/certs/* /shared-ssl/
-
-          # 2. 生成 Python 证书包
-          # 获取 Python 默认证书路径
-          CACERT_PATH=$(python -c "import certifi; print(certifi.where())")
-          # 合并默认证书和自定义证书
-          cat $CACERT_PATH /custom-certs/* > /python-ca/ca-bundle.pem
-        securityContext:
-          privileged: true
-        volumeMounts:
-        - name: custom-ca-cert
-          mountPath: /custom-certs
-        - name: shared-ssl-certs   # 挂载系统证书 Volume
-          mountPath: /shared-ssl
-        - name: python-ca-bundle   # 挂载 Python 证书 Volume
-          mountPath: /python-ca
       containers:
       - image: "{{ .Values.image.api.repository }}:{{ default .Chart.AppVersion .Values.image.api.tag }}"
         imagePullPolicy: "{{ .Values.image.api.pullPolicy }}"
@@ -119,8 +89,6 @@ spec:
 {{ toYaml .Values.api.containerSecurityContext | indent 10 }}
         {{- end }}
         env:
-        - name: SSL_CERT_FILE         # 指定 Python 使用自定义证书包
-          value: /etc/python-certs/ca-bundle.pem
         {{- if .Values.sandbox.enabled }}
         - name: CODE_EXECUTION_API_KEY
           valueFrom:
@@ -148,11 +116,6 @@ spec:
           mountPath: {{ .Values.api.persistence.mountPath | quote }}
           subPath: {{ .Values.api.persistence.persistentVolumeClaim.subPath | default "" }}
         {{- end }}
-        - name: shared-ssl-certs      # 挂载系统证书
-          mountPath: /etc/ssl/certs   # 覆盖系统证书目录
-        - name: python-ca-bundle      # 挂载 Python 证书包
-          mountPath: /etc/python-certs/ca-bundle.pem
-          subPath: ca-bundle.pem
     {{- if and (.Values.nodeSelector) (not .Values.api.nodeSelector) }}
       nodeSelector:
 {{ toYaml .Values.nodeSelector | indent 8 }}
@@ -183,11 +146,4 @@ spec:
         persistentVolumeClaim:
           claimName: {{ .Values.api.persistence.persistentVolumeClaim.existingClaim | default (printf "%s" (include "dify.fullname" . | trunc 58)) }}
       {{- end }}
-      - name: custom-ca-cert
-        configMap:
-          name: {{ template "dify.customCaCert.fullname" . }}
-      - name: shared-ssl-certs   # 系统根证书目录
-        emptyDir: {}
-      - name: python-ca-bundle   # Python 自定义证书包
-        emptyDir: {}
 {{- end }}

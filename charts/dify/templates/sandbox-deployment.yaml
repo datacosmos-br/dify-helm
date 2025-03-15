@@ -50,39 +50,6 @@ spec:
       securityContext:
 {{ toYaml .Values.sandbox.podSecurityContext | indent 8 }}
       {{- end }}
-      initContainers:
-      - name: update-ca-certificates
-        image: "{{ .Values.image.sandbox.repository }}:{{ .Values.image.sandbox.tag }}"
-        command:
-        - /bin/sh
-        - -c
-        - |
-          # 1. 更新系统根证书
-          # 将自定义证书复制到 CA 目录并更新
-          ls -l /custom-certs/
-          cp /custom-certs/* /usr/local/share/ca-certificates/
-          update-ca-certificates
-
-          # 将生成的系统证书复制到共享 Volume
-          cp -r /etc/ssl/certs/* /shared-ssl/
-
-          # 2. 生成 Python 证书包
-          # 获取 Python 默认证书路径
-          CACERT_PATH=$(python -c "import certifi; print(certifi.where())")
-          # 获取证书文件所在的目录
-          CERT_DIR=$(python -c "import os, certifi; print(os.path.dirname(certifi.where()))")
-          # 合并默认证书和自定义证书
-          cat /custom-certs/* >> $CACERT_PATH 
-          cp -r $CERT_DIR/*  /python-ca/
-        securityContext:
-          privileged: true
-        volumeMounts:
-        - name: custom-ca-cert
-          mountPath: /custom-certs
-        - name: shared-ssl-certs   # 挂载系统证书 Volume
-          mountPath: /shared-ssl
-        - name: python-ca-bundle   # 挂载 Python Certifi 证书包
-          mountPath: /python-ca
       containers:
       - image: "{{ .Values.image.sandbox.repository }}:{{ .Values.image.sandbox.tag }}"
         imagePullPolicy: "{{ .Values.image.sandbox.pullPolicy }}"
@@ -132,7 +99,6 @@ spec:
         securityContext:
           allowPrivilegeEscalation: {{ .Values.sandbox.privileged }}
         volumeMounts:
-        # update-begin-author: luo_jj date:2025-03-05 for:添加 sandbox config.yaml 配置文件
         {{- if $usePvc }}
         - name: app-data
           mountPath: /var/sandbox/sandbox-python/usr/local/storage
@@ -142,11 +108,6 @@ spec:
           mountPath: /conf/config.yaml
           readOnly: true
           subPath: config.yaml
-        # update-end-author: luo_jj date:2025-03-05 for:添加 sandbox config.yaml 配置文件
-        - name: shared-ssl-certs      # 挂载系统证书
-          mountPath: /etc/ssl/certs   # 覆盖系统证书目录
-        - name: python-ca-bundle      # 挂载 Python Certifi 证书包
-          mountPath: /usr/local/lib/python3.10/site-packages/certifi
     {{- if and (.Values.nodeSelector) (not .Values.sandbox.nodeSelector) }}
       nodeSelector:
 {{ toYaml .Values.nodeSelector | indent 8 }}
@@ -172,7 +133,6 @@ spec:
 {{ toYaml .Values.sandbox.tolerations | indent 8 }}
     {{- end }}
       volumes:
-      # update-begin-author: luo_jj date:2025-03-05 for:添加 sandbox config.yaml 配置文件
       {{- if $usePvc }}
       - name: app-data
         persistentVolumeClaim:
@@ -181,12 +141,4 @@ spec:
       - name: sandbox-config
         configMap:
           name: {{ template "dify.sandbox.fullname" . }}
-      # update-end-author: luo_jj date:2025-03-05 for:添加 sandbox config.yaml 配置文件
-      - name: custom-ca-cert   # 自定义根证书
-        configMap:
-          name: {{ template "dify.customCaCert.fullname" . }}
-      - name: shared-ssl-certs   # 系统根证书目录
-        emptyDir: {}
-      - name: python-ca-bundle   # Python Certifi 证书包
-        emptyDir: {}
 {{- end }}

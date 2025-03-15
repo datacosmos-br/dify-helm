@@ -3,8 +3,6 @@ kind: ConfigMap
 metadata:
   name: {{ template "dify.sandbox.fullname" . }}
 data:
-  # update-begin-author: luo_jj date:2025-03-05 for:添加 sandbox config.yaml 配置文件
+  {{- include "dify.sandbox.config" . | nindent 2 }}
   config.yaml: |-
     {{- include "dify.sandbox.config.conf" . | indent 4 }}
-  # update-end-author: luo_jj date:2025-03-05 for:添加 sandbox config.yaml 配置文件
-  {{- include "dify.sandbox.config" . | nindent 2 }}
