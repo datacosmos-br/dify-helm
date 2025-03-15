@@ -3,9 +3,9 @@ name: Release Charts
 on:
   push:
     branches:
-      - v0.22.1
+      - master
     paths:
-      - "charts/dify/Chart.yaml"
+      - 'charts/dify/Chart.yaml'
   workflow_dispatch: # Add this section to enable manual triggering
 
 permissions:
