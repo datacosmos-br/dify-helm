@@ -13,6 +13,7 @@ image:
     ##
     # pullSecrets:
     #   - myRegistryKeySecretName
+
   web:
     repository: registry.vxk8s.com/langgenius/dify-web
     tag: "main"
@@ -23,6 +24,7 @@ image:
     ##
     # pullSecrets:
     #   - myRegistryKeySecretName
+
   sandbox:
     repository: langgenius/dify-sandbox
     tag: "0.2.10"
@@ -33,6 +35,7 @@ image:
     ##
     # pullSecrets:
     #   - myRegistryKeySecretName
+
   proxy:
     repository: nginx
     tag: latest
@@ -73,9 +76,15 @@ api:
   nodeSelector: {}
   affinity: {}
   tolerations: []
-  ## Configure extra options for api containers' liveness, readiness and startup probes
+  autoscaling:
+    enabled: false
+    minReplicas: 1
+    maxReplicas: 100
+    targetCPUUtilizationPercentage: 80
+    # targetMemoryUtilizationPercentage: 80
+  ## Configure extra options for API containers' liveness, readiness, and startup probes
   ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes
-  ## @param api.livenessProbe.enabled Enable livenessProbe on api nodes
+  ## @param api.livenessProbe.enabled Enable livenessProbe on API nodes
   livenessProbe:
     enabled: true
     initialDelaySeconds: 30
@@ -83,7 +92,7 @@ api:
     timeoutSeconds: 5
     failureThreshold: 5
     successThreshold: 1
-  ## @param api.readinessProbe.enabled Enable readinessProbe on api nodes
+  ## @param api.readinessProbe.enabled Enable readinessProbe on API nodes
   readinessProbe:
     enabled: true
     initialDelaySeconds: 10
@@ -91,7 +100,7 @@ api:
     timeoutSeconds: 5
     failureThreshold: 5
     successThreshold: 1
-  ## @param api.startupProbe.enabled Enable startupProbe on api containers
+  ## @param api.startupProbe.enabled Enable startupProbe on API containers
   startupProbe:
     enabled: false
     initialDelaySeconds: 5
@@ -111,7 +120,7 @@ api:
   containerSecurityContext: {}
   extraEnv:
   # Apply your own Environment Variables if necessary.
-  # Variable defined here takes higher priority than those from `ConfigMap` generated given `.Values`
+  # Variables defined here take higher priority than those from `ConfigMap` generated given `.Values`
   # The direct approach
   # - name: LANG
   #   value: "C.UTF-8"
@@ -123,8 +132,8 @@ api:
   #        name: my-secret
   #        key: DB_PASSWORD
   - name: CHECK_UPDATE_URL
-  # Won't check for update if left empty
-  #   value: https://updates.dify.ai
+    # Won't check for updates if left empty
+    #   value: https://updates.dify.ai
     value: ""
   - name: CODE_MAX_NUMBER
     value: "9223372036854775807"
@@ -166,13 +175,11 @@ api:
     # or download URL to the front-end or as a multi-modal model input;
     # In order to prevent others from forging, the image preview URL is signed and has a 5-minute expiration time.
     files: "https://dify.vxk8s.com"
-    # Marketplace URL, used to display the Marketplace URL to the front-end.
-    # If empty, it is the same domain. Example: https://marketplace.dify.ai
-    marketplace: "https://marketplace.dify.ai"
     marketplaceApi: "https://marketplace.dify.ai"
+    marketplace: "https://marketplace.dify.ai"
   mail:
-    # default email sender from email address, if not not given specific address
-    defaultSender: 'YOUR EMAIL FROM (eg: no-reply <no-reply@dify.ai>)'
+    # default email sender from email address, if not given a specific address
+    defaultSender: "YOUR EMAIL FROM (e.g.: no-reply <no-reply@dify.ai>)"
     # Mail type, supported values are `smtp`, `resend` https://docs.dify.ai/getting-started/install-self-hosted/environments#mail-related-configuration
     type: "resend"
     resend:
@@ -192,7 +199,7 @@ api:
   # When enabled, migrations will be executed prior to application startup and the application will start after the migrations have completed.
   migration: true
   # A secret key that is used for securely signing the session cookie and encrypting sensitive information on the database. You can generate a strong key using `openssl rand -base64 42`.
-  secretKey: 'sk-9f73s3ljTXVcMT3Blb3ljTqtsKiGHXVcMT3BlbkFJLK7U'
+  secretKey: "sk-9f73s3ljTXVcMT3Blb3ljTqtsKiGHXVcMT3BlbkFJLK7U"
   ## Storage for `api` and `worker`
   ## Ignored if `.Values.externalS3.enabled` is true
   ##
@@ -238,7 +245,13 @@ worker:
   nodeSelector: {}
   affinity: {}
   tolerations: []
-  ## Configure extra options for worker containers' liveness, readiness and startup probes
+  autoscaling:
+    enabled: false
+    minReplicas: 1
+    maxReplicas: 100
+    targetCPUUtilizationPercentage: 80
+    # targetMemoryUtilizationPercentage: 80
+  ## Configure extra options for worker containers' liveness, readiness, and startup probes
   ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes
   ## @param worker.customLivenessProbe Custom livenessProbe that overrides the default one
   customLivenessProbe: {}
@@ -252,7 +265,7 @@ worker:
   containerSecurityContext: {}
   extraEnv:
   # Apply your own Environment Variables if necessary.
-  # Variable defined here takes higher priority than those from `ConfigMap` generated given `.Values`
+  # Variables defined here take higher priority than those from `ConfigMap` generated given `.Values`
   # The direct approach
   # - name: LANG
   #   value: "C.UTF-8"
@@ -288,7 +301,7 @@ proxy:
   nodeSelector: {}
   affinity: {}
   tolerations: []
-  ## Configure extra options for proxy containers' liveness, readiness and startup probes
+  ## Configure extra options for proxy containers' liveness, readiness, and startup probes
   ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes
   ## @param proxy.customLivenessProbe Custom livenessProbe that overrides the default one
   customLivenessProbe: {}
@@ -357,7 +370,13 @@ web:
   nodeSelector: {}
   affinity: {}
   tolerations: []
-  ## Configure extra options for web containers' liveness, readiness and startup probes
+  autoscaling:
+    enabled: false
+    minReplicas: 1
+    maxReplicas: 100
+    targetCPUUtilizationPercentage: 80
+    # targetMemoryUtilizationPercentage: 80
+  ## Configure extra options for web containers' liveness, readiness, and startup probes
   ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes
   ## @param web.livenessProbe.enabled Enable livenessProbe on web nodes
   livenessProbe:
@@ -426,7 +445,13 @@ sandbox:
   nodeSelector: {}
   affinity: {}
   tolerations: []
-  ## Configure extra options for sandbox containers' liveness, readiness and startup probes
+  autoscaling:
+    enabled: false
+    minReplicas: 1
+    maxReplicas: 100
+    targetCPUUtilizationPercentage: 80
+    # targetMemoryUtilizationPercentage: 80
+  ## Configure extra options for sandbox containers' liveness, readiness, and startup probes
   ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes
   ## @param sandbox.livenessProbe.enabled Enable livenessProbe on sandbox nodes
   livenessProbe:
@@ -475,8 +500,7 @@ sandbox:
     clusterIP: ""
   auth:
     apiKey: "dify-sandbox"
-  privileged:
-    false
+  privileged: false
   ## Sandbox ServiceAccount configuration
   ##
   serviceAccount:
@@ -501,7 +525,7 @@ ssrfProxy:
   nodeSelector: {}
   affinity: {}
   tolerations: []
-  ## Configure extra options for ssrf proxy containers' liveness, readiness and startup probes
+  ## Configure extra options for ssrf proxy containers' liveness, readiness, and startup probes
   ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes
   ## @param ssrfProxy.customLivenessProbe Custom livenessProbe that overrides the default one
   customLivenessProbe: {}
@@ -568,7 +592,7 @@ pluginDaemon:
   nodeSelector: {}
   affinity: {}
   tolerations: []
-  ## Configure extra options for plugin daemon containers' liveness, readiness and startup probes
+  ## Configure extra options for plugin daemon containers' liveness, readiness, and startup probes
   ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes
   ## @param pluginDaemon.customLivenessProbe Custom livenessProbe that overrides the default one
   customLivenessProbe: {}
@@ -600,7 +624,6 @@ pluginDaemon:
     serverKey: "lYkiYYT6owG+71oLerGzA7GXCgOT++6ovaezWAjpCjf+Sjc3ZtU+qUEi"
     # A separate key for interactions between `api`(`worker`) and `pluginDaemon`
     difyApiKey: "QaHbTe77CtuXmsfyhR7+vRjI/+XbV1AaFy691iy+kGDv2Jvy0/eAh8Y1"
-  database: "dify_plugin"
   persistence:
     mountPath: "/app/storage"
     annotations:
@@ -618,6 +641,12 @@ pluginDaemon:
       accessModes: ReadWriteMany
       size: 5Gi
       subPath: ""
+  marketplace:
+    enabled: true
+    # Takes effect only if built-in `nginx` were enabled
+    # If enabled, route marketplace api call to built-in `nginx` and strip headers for tracking.
+    # https://github.com/BorisPolonsky/dify-helm/pull/131
+    apiProxyEnabled: false
   ## pluginDaemon ServiceAccount configuration
   ##
   serviceAccount:
@@ -708,7 +737,6 @@ postgresql:
     ##
     tolerations: []
 
-
 weaviate:
   enabled: true
   image:
@@ -730,14 +758,14 @@ weaviate:
   # example setting the nofile limit
   command: ["/bin/weaviate"]
   args:
-    - '--host'
-    - '0.0.0.0'
-    - '--port'
-    - '8080'
-    - '--scheme'
-    - 'http'
-    - '--config-file'
-    - '/weaviate-config/conf.yaml'
+    - "--host"
+    - "0.0.0.0"
+    - "--port"
+    - "8080"
+    - "--scheme"
+    - "http"
+    - "--config-file"
+    - "/weaviate-config/conf.yaml"
     - --read-timeout=60s
     - --write-timeout=60s
 
@@ -749,7 +777,6 @@ weaviate:
   # args:
   #   - "-c"
   #   - "ulimit -n 65535 && /bin/weaviate --host 0.0.0.0 --port 8080 --scheme http --config-file /weaviate-config/conf.yaml"
-
 
   # it is possible to change the sysctl's 'vm.max_map_count' using initContainer for Weaviate,
   # the init Container runs before Weaviate Container and sets the value for the WHOLE node
@@ -775,14 +802,14 @@ weaviate:
   # to cases where no data is imported yet. Scaling down after importing data may
   # break usability. Full dynamic scalability will be added in a future release.
   replicas: 1
-  resources: {}
+  resources:
+    {}
     # requests:
     #   cpu: '500m'
     #   memory: '300Mi'
     # limits:
     #   cpu: '1000m'
     #   memory: '1Gi'
-
 
   # Add a service account ot the Weaviate pods if you need Weaviate to have permissions to
   # access kubernetes resources or cloud provider resources. For example for it to have
@@ -833,7 +860,6 @@ weaviate:
     failureThreshold: 3
     successThreshold: 1
     timeoutSeconds: 3
-
 
   terminationGracePeriodSeconds: 600
 
@@ -889,7 +915,6 @@ weaviate:
     limit: 100
   debug: false
 
-
   # Insert any custom environment variables or envSecrets by putting the exact name
   # and desired value into the settings below. Any env name passed will be automatically
   # set for the statefulSet.
@@ -936,11 +961,11 @@ weaviate:
     # The User/s can be a simple name or an email, no matter if it exists or not.
     # NOTE: Make sure to add the users to the authorization above overwise they will not be allowed to interact with Weaviate.
     # AUTHENTICATION_APIKEY_USERS: 'jane@doe.com,ian-smith'
-    AUTHENTICATION_APIKEY_ENABLED: 'true'
-    AUTHENTICATION_APIKEY_ALLOWED_KEYS: 'WVF5YThaHlkYwhGUSmCRgsX3tD5ngdN8pkih'
-    AUTHENTICATION_APIKEY_USERS: 'hello@dify.ai'
-    AUTHORIZATION_ADMINLIST_ENABLED: 'true'
-    AUTHORIZATION_ADMINLIST_USERS: 'hello@dify.ai'
+    AUTHENTICATION_APIKEY_ENABLED: "true"
+    AUTHENTICATION_APIKEY_ALLOWED_KEYS: "WVF5YThaHlkYwhGUSmCRgsX3tD5ngdN8pkih"
+    AUTHENTICATION_APIKEY_USERS: "hello@dify.ai"
+    AUTHORIZATION_ADMINLIST_ENABLED: "true"
+    AUTHORIZATION_ADMINLIST_USERS: "hello@dify.ai"
   envSecrets:
     # create a Kubernetes secret with AUTHENTICATION_APIKEY_ALLOWED_KEYS key and its respective value
     # AUTHENTICATION_APIKEY_ALLOWED_KEYS: name-of-the-k8s-secret-containing-the-comma-separated-api-keys
@@ -1066,7 +1091,6 @@ weaviate:
       #   AZURE_STORAGE_KEY: name-of-the-k8s-secret-containing-account-key
       #   AZURE_STORAGE_CONNECTION_STRING: name-of-the-k8s-secret-containing-connection-string
 
-
   # modules are extensions to Weaviate, they can be used to support various
   # ML-models, but also other features unrelated to model inference.
   # An inference/vectorizer module is not required, you can also run without any
@@ -1083,7 +1107,7 @@ weaviate:
   # values.yaml will be ignored when defining a custom config map.
   custom_config_map:
     enabled: false
-    name: 'custom-config'
+    name: "custom-config"
 
   # Pass any annotations to Weaviate pods
   annotations:
@@ -1112,7 +1136,8 @@ service:
 ingress:
   enabled: false
   className: ""
-  annotations: {}
+  annotations:
+    {}
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
     # nginx.ingress.kubernetes.io/backend-protocol: HTTP
@@ -1132,7 +1157,8 @@ ingress:
   #    hosts:
   #      - dify-example.local
 
-resources: {}
+resources:
+  {}
   # We usually recommend not to specify default resources and to leave this as a conscious
   # choice for the user. This also increases chances charts run on environments with little
   # resources, such as Minikube. If you do want to specify resources, uncomment the following
@@ -1143,7 +1169,6 @@ resources: {}
   # requests:
   #   cpu: 100m
   #   memory: 128Mi
-
 
 # Global node selector
 # If set, this will apply to all dify components
@@ -2948,7 +2973,6 @@ redis:
     annotationKey: external-dns.alpha.kubernetes.io/
     additionalAnnotations: {}
 
-
 ###################################
 # External postgres
 # - these configs are only used when `externalPostgres.enabled` is true
@@ -2959,7 +2983,9 @@ externalPostgres:
   password: "difyai123456"
   address: localhost
   port: 5432
-  dbName: dify
+  database:
+    api: "dify"
+    pluginDaemon: "dify_plugin"
   maxOpenConns: 20
   maxIdleConns: 5
 
@@ -2985,7 +3011,7 @@ externalS3:
 ###################################
 externalAzureBlobStorage:
   enabled: false
-  url: 'https://<your_account_name>.blob.core.windows.net'
+  url: "https://<your_account_name>.blob.core.windows.net"
   account: "https://xxx.r2.cloudflarestorage.com"
   key: "difyai"
   container: "difyai-container"
@@ -3002,6 +3028,7 @@ externalOSS:
   region: "ap-southeast-1"
   bucketName: "difyai"
   authVersion: v4
+  path: "your-path"
 
 ###################################
 # External Google Cloud Storage
@@ -3023,6 +3050,17 @@ externalCOS:
   region: "your-region"
   bucketName: "your-bucket-name"
   scheme: "your-scheme"
+
+###################################
+# External HUAWEI OBS
+# - these configs are only used when `externalS3.enabled` and `externalAzureBlobStorage.enabled` and `externalOSS.enabled`  and `externalGCS.enabled` and `externalCOS.enabled` are false and `externalOBS.enabled` is true
+###################################
+externalOBS:
+  enabled: false
+  secretKey: "your-secret-key"
+  secretId: "your-secret-id"
+  bucketName: "your-bucket-name"
+  server: "your-server"
 
 ###################################
 # External Redis
@@ -3066,7 +3104,7 @@ externalMilvus:
   enabled: false
   host: "your-milvus.domain"
   port: 19530
-  database: 'default'
+  database: "default"
   user: "user"
   password: "Milvus"
   useTLS: false
@@ -3096,6 +3134,19 @@ externalTencentVectorDB:
   database: "dify"
   shard: 1
   replicas: 2
+
+###################################
+# External MyScaleDB Vector DB
+# - these configs take effect only if both `externalWeaviate.enabled`, `externalQdrant.enabled` and `externalMilvus.enabled` and `externalPgvector.enabled` and `externalTencentVectorDB.enabled` are set as `false` and `externalMyScaleDB.enabled` is `true`
+###################################
+externalMyScaleDB:
+  enabled: false
+  host: "myscale"
+  port: 8123
+  user: "default"
+  password: ""
+  database: "dify"
+  ftsParams: ""
 
 ## update-begin-author: luo_jj date:2025-02-24 for: 添加知识库相关配置
 knowledge:

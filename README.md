@@ -23,14 +23,24 @@ helm install my-release dify/dify
 - [ ] qdrant
 - [ ] milvus
 ### External components that can be used by this app with proper configuration
-- [x] redis
-- [x] postgresql
-- [x] object storage
-- [x] weaviate
-- [x] qdrant
-- [x] milvus
-- [x] pgvector
-- [x] Tencent Vector DB
+
+- [x] Redis
+- [x] PostgreSQL
+- Object Storage:
+  - [x] Amazon S3
+  - [x] Microsoft Azure Blob Storage
+  - [x] Alibaba Cloud OSS
+  - [x] Google Cloud Storage
+  - [x] Tencent Cloud COS
+  - [x] Huawei Cloud OBS
+- External Vector DB:
+  - [x] Weaviate
+  - [x] Qdrant
+  - [x] Milvus
+  - [x] PGVector
+  - [x] Tencent Vector DB
+  - [x] MyScaleDB
+
 ## Contributors
 <a href="https://github.com/borispolonsky/dify-helm/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=borispolonsky/dify-helm" />
