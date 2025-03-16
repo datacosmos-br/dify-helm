@@ -154,7 +154,6 @@ MARKETPLACE_API_URL: "/marketplace"
 {{- else }}
 MARKETPLACE_API_URL: {{ .Values.api.url.marketplaceApi | quote }}
 {{- end }}
-MARKETPLACE_URL: {{ .Values.api.url.marketplace | quote }}
 {{- end }}
 
 {{- define "dify.db.config" -}}
@@ -327,9 +326,9 @@ PGVECTOR_DATABASE: {{ .Values.externalPgvector.dbName }}
 # tencent vector configurations, only available when VECTOR_STORE is `tencent`
 VECTOR_STORE: tencent
 TENCENT_VECTOR_DB_URL: {{ .Values.externalTencentVectorDB.url | quote }}
-# TENCENT_VECTOR_DB_API_KEY: {{ .Values.externalTencentVectorDB.apiKey | quote }}
+TENCENT_VECTOR_DB_API_KEY: {{ .Values.externalTencentVectorDB.apiKey | quote }}
 TENCENT_VECTOR_DB_TIMEOUT: {{ .Values.externalTencentVectorDB.timeout | quote }}
-# TENCENT_VECTOR_DB_USERNAME: {{ .Values.externalTencentVectorDB.username | quote }}
+TENCENT_VECTOR_DB_USERNAME: {{ .Values.externalTencentVectorDB.username | quote }}
 TENCENT_VECTOR_DB_DATABASE: {{ .Values.externalTencentVectorDB.database | quote }}
 TENCENT_VECTOR_DB_SHARD: {{ .Values.externalTencentVectorDB.shard | quote }}
 TENCENT_VECTOR_DB_REPLICAS: {{ .Values.externalTencentVectorDB.replicas | quote }}
@@ -601,15 +600,18 @@ UPLOAD_FILE_BATCH_LIMIT: {{ printf "%d" (int64 .Values.knowledge.uploadFileBatch
 INDEXING_MAX_SEGMENTATION_TOKENS_LENGTH: {{ printf "%d" (int64 .Values.knowledge.indexingMaxSegmentationTokensLength) | quote }}
 {{- end }}
 
-{{- define "dify.marketplace.config" }}
-{{- if .Values.pluginDaemon.marketplace.enabled }}
-MARKETPLACE_ENABLED: "true"
-MARKETPLACE_API_URL: {{ .Values.api.url.marketplaceApi | quote }}
+{{- define "dify.workflow.config" }}
 HTTP_REQUEST_MAX_CONNECT_TIMEOUT: {{ printf "%d" (int64 .Values.workflow.httpRequestMaxConnectTimeout) | quote }}
 HTTP_REQUEST_MAX_READ_TIMEOUT: {{ printf "%d" (int64 .Values.workflow.httpRequestMaxReadTimeout) | quote }}
 HTTP_REQUEST_MAX_WRITE_TIMEOUT: {{ printf "%d" (int64 .Values.workflow.httpRequestMaxWriteTimeout) | quote }}
 HTTP_REQUEST_NODE_MAX_BINARY_SIZE: {{ printf "%d" (int64 .Values.workflow.httpRequestNodeMaxBinarySize) | quote }}
 HTTP_REQUEST_NODE_MAX_TEXT_SIZE: {{ printf "%d" (int64 .Values.workflow.httpRequestNodeMaxTextSize) | quote }}
+{{- end }}
+
+{{- define "dify.marketplace.config" }}
+{{- if .Values.pluginDaemon.marketplace.enabled }}
+MARKETPLACE_ENABLED: "true"
+MARKETPLACE_API_URL: {{ .Values.api.url.marketplaceApi | quote }}
 {{- else }}
 MARKETPLACE_ENABLED: "false"
 {{- end }}
