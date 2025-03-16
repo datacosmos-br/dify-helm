@@ -154,6 +154,7 @@ MARKETPLACE_API_URL: "/marketplace"
 {{- else }}
 MARKETPLACE_API_URL: {{ .Values.api.url.marketplaceApi | quote }}
 {{- end }}
+MARKETPLACE_URL: {{ .Values.api.url.marketplace | quote }}
 {{- end }}
 
 {{- define "dify.db.config" -}}
@@ -326,9 +327,9 @@ PGVECTOR_DATABASE: {{ .Values.externalPgvector.dbName }}
 # tencent vector configurations, only available when VECTOR_STORE is `tencent`
 VECTOR_STORE: tencent
 TENCENT_VECTOR_DB_URL: {{ .Values.externalTencentVectorDB.url | quote }}
-TENCENT_VECTOR_DB_API_KEY: {{ .Values.externalTencentVectorDB.apiKey | quote }}
+# TENCENT_VECTOR_DB_API_KEY: {{ .Values.externalTencentVectorDB.apiKey | quote }}
 TENCENT_VECTOR_DB_TIMEOUT: {{ .Values.externalTencentVectorDB.timeout | quote }}
-TENCENT_VECTOR_DB_USERNAME: {{ .Values.externalTencentVectorDB.username | quote }}
+# TENCENT_VECTOR_DB_USERNAME: {{ .Values.externalTencentVectorDB.username | quote }}
 TENCENT_VECTOR_DB_DATABASE: {{ .Values.externalTencentVectorDB.database | quote }}
 TENCENT_VECTOR_DB_SHARD: {{ .Values.externalTencentVectorDB.shard | quote }}
 TENCENT_VECTOR_DB_REPLICAS: {{ .Values.externalTencentVectorDB.replicas | quote }}
