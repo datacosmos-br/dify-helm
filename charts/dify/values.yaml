@@ -5,7 +5,7 @@
 image:
   api:
     repository: registry.vxk8s.com/langgenius/dify-api
-    tag: "main-1742140140050"
+    tag: "main-1742351948895"
     pullPolicy: IfNotPresent
     ## Optionally specify an array of imagePullSecrets.
     ## Secrets must be manually created in the namespace.
@@ -16,7 +16,7 @@ image:
 
   web:
     repository: registry.vxk8s.com/langgenius/dify-web
-    tag: "main-1742140140050"
+    tag: "main-1742351948895"
     pullPolicy: IfNotPresent
     ## Optionally specify an array of imagePullSecrets.
     ## Secrets must be manually created in the namespace.
@@ -60,7 +60,7 @@ image:
 
   pluginDaemon:
     repository: registry.vxk8s.com/langgenius/dify-plugin-daemon
-    tag: 0.0.4-local
+    tag: 0.0.5-local
     pullPolicy: IfNotPresent
     ## Optionally specify an array of imagePullSecrets.
     ## Secrets must be manually created in the namespace.
