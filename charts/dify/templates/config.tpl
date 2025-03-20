@@ -155,6 +155,7 @@ MARKETPLACE_API_URL: "/marketplace"
 MARKETPLACE_API_URL: {{ .Values.api.url.marketplaceApi | quote }}
 {{- end }}
 MARKETPLACE_URL: {{ .Values.api.url.marketplace | quote }}
+{{- include "dify.knowledge.config" . }}
 {{- end }}
 
 {{- define "dify.db.config" -}}
@@ -585,6 +586,15 @@ PLUGIN_WORKING_PATH: {{ printf "%s/cwd" .Values.pluginDaemon.persistence.mountPa
 DIFY_INNER_API_URL: "http://{{ template "dify.api.fullname" . }}:{{ .Values.api.service.port }}"
 FORCE_VERIFYING_SIGNATURE: {{ .Values.pluginDaemon.forceVerifyingSignature | quote }}
 {{- include "dify.marketplace.config" . }}
+{{- end }}
+
+{{- define "dify.marketplace.config" }}
+{{- if .Values.pluginDaemon.marketplace.enabled }}
+MARKETPLACE_ENABLED: "true"
+MARKETPLACE_API_URL: {{ .Values.api.url.marketplaceApi | quote }}
+{{- else }}
+MARKETPLACE_ENABLED: "false"
+{{- end }}
 {{- end }}
 
 {{- define "dify.knowledge.config" }}
