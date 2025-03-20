@@ -610,12 +610,3 @@ HTTP_REQUEST_MAX_WRITE_TIMEOUT: {{ printf "%d" (int64 .Values.workflow.httpReque
 HTTP_REQUEST_NODE_MAX_BINARY_SIZE: {{ printf "%d" (int64 .Values.workflow.httpRequestNodeMaxBinarySize) | quote }}
 HTTP_REQUEST_NODE_MAX_TEXT_SIZE: {{ printf "%d" (int64 .Values.workflow.httpRequestNodeMaxTextSize) | quote }}
 {{- end }}
-
-{{- define "dify.marketplace.config" }}
-{{- if .Values.pluginDaemon.marketplace.enabled }}
-MARKETPLACE_ENABLED: "true"
-MARKETPLACE_API_URL: {{ .Values.api.url.marketplaceApi | quote }}
-{{- else }}
-MARKETPLACE_ENABLED: "false"
-{{- end }}
-{{- end }}
