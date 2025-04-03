@@ -148,11 +148,11 @@ CONSOLE_API_URL: {{ .Values.api.url.consoleApi | quote }}
 # example: http://udify.app
 APP_API_URL: {{ .Values.api.url.appApi | quote }}
 # The DSN for Sentry
-{{- include "dify.marketplace.config" . }}
 {{- if and .Values.pluginDaemon.enabled .Values.pluginDaemon.marketplace.enabled .Values.pluginDaemon.marketplace.apiProxyEnabled }}
+MARKETPLACE_ENABLED: "true"
 MARKETPLACE_API_URL: "/marketplace"
 {{- else }}
-MARKETPLACE_API_URL: {{ .Values.api.url.marketplaceApi | quote }}
+{{- include "dify.marketplace.config" . }}
 {{- end }}
 MARKETPLACE_URL: {{ .Values.api.url.marketplace | quote }}
 {{- include "dify.knowledge.config" . }}
@@ -481,7 +481,7 @@ server {
       include proxy.conf;
     }
 
-    location /e {
+    location /e/ {
       proxy_pass http://{{ template "dify.pluginDaemon.fullname" .}}:{{ .Values.pluginDaemon.service.ports.daemon }};
       include proxy.conf;
     }
